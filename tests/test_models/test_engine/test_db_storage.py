@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """
 Contains the TestDBStorageDocs and TestDBStorage classes
 """
@@ -86,8 +87,8 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
-    
-     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """Test that get properly returns a requested object"""
         user = User(name="User1")
