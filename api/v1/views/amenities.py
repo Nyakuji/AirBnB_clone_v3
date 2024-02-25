@@ -61,16 +61,26 @@ def create_amenity():
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
 def updates_amenity(amenity_id):
     """Updates an Amenity object"""
-    all_amenities = storage.all("Amenity").values()
-    amenity_obj = [obj.to_dict() for obj in all_amenities
-                   if obj.id == amenity_id]
-    if amenity_obj == []:
+    amenity = storage.get(Amenity, amenity_id)
+
+    # Check if amenity_id is linked to any Amenity object
+    if amenity is None:
         abort(404)
-    if not request.get_json():
-        abort(400, 'Not a JSON')
-    amenity_obj[0]['name'] = request.json['name']
-    for obj in all_amenities:
-        if obj.id == amenity_id:
-            obj.name = request.json['name']
-    storage.save()
-    return jsonify(amenity_obj[0]), 200
+
+    # Check if the request body is valid JSON
+    if not request.is_json:
+        abort(400, description='Not a JSON')
+
+    # Get the JSON data from the request body
+    data = request.get_json()
+
+    # Update the Amenity object with valid key-value pairs
+    for key, value in data.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(amenity, key, value)
+
+    # Save the updated Amenity object
+    amenity.save()
+
+    # Return the updated Amenity object with status code 200
+    return jsonify(amenity.to_dict()), 200
