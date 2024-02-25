@@ -46,16 +46,24 @@ def delete_amenity(amenity_id):
 @app_views.route('/amenities/', methods=['POST'])
 def create_amenity():
     """Creates an Amenity"""
-    if not request.get_json():
-        abort(400, 'Not a JSON')
-    if 'name' not in request.get_json():
-        abort(400, 'Missing name')
-    amenities = []
-    new_amenity = Amenity(name=request.json['name'])
+    # Check if the request body is valid JSON
+    if not request.is_json:
+        abort(400, description='Not a JSON')
+
+    # Get the JSON data from the request body
+    data = request.get_json()
+
+    # Check if the dictionary contains the key 'name'
+    if 'name' not in data:
+        abort(400, description='Missing name')
+
+    # Create a new Amenity
+    new_amenity = Amenity(**data)
     storage.new(new_amenity)
     storage.save()
-    amenities.append(new_amenity.to_dict())
-    return jsonify(amenities[0]), 201
+
+    # Return the new Amenity with status code 201
+    return jsonify(new_amenity.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'])
