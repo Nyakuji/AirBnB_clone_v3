@@ -100,5 +100,5 @@ class DBStorage:
         count_objects = 0
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
-                count_bjects += len(self.__session.query(classes[clss]).all())
+                count_objects += len(self.__session.query(classes[clss]).all())
         return count_objects
