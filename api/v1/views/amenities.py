@@ -80,7 +80,7 @@ def updates_amenity(amenity_id):
             setattr(amenity, key, value)
 
     # Save the updated Amenity object
-    amenity.save()
+    storage.save()
 
     # Return the updated Amenity object with status code 200
     return jsonify(amenity.to_dict()), 200
