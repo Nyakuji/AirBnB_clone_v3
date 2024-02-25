@@ -14,10 +14,8 @@ from models.user import User
 from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-Base = declarative_base()
 
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -42,9 +40,6 @@ class DBStorage:
                                              HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -86,19 +81,27 @@ class DBStorage:
         Returns the object based on the class name and its ID, or None if not
         found
         """
-        objects = self.__session.query(classes[cls])
-        for obj in objects:
-            if obj.id == id:
-                return obj
+        if cls not in classes.values():
+            return None
+
+        all_cls = models.storage.all(cls)
+        for value in all_cls.values():
+            if (value.id == id):
+                return value
+
         return None
 
     def count(self, cls=None):
         """
-        Returns the number of objects in storage matching the given class name.
-        If no name is passed, returns the count of all objects in storage.
+        count the number of objects in storage
         """
-        count_objects = 0
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                count_objects += len(self.__session.query(classes[clss]).all())
-        return count_objects
+        all_class = classes.values()
+
+        if not cls:
+            count = 0
+            for clas in all_class:
+                count += len(models.storage.all(clas).values())
+        else:
+            count = len(models.storage.all(cls).values())
+
+        return count
