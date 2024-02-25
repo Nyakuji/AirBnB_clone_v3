@@ -40,33 +40,52 @@ def delete_state(state_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/', methods=['POST'])
+@app_views.route('/states', methods=['POST'])
 def create_state():
-    """Creates a State"""
-    if not request.get_json():
-        abort(400, 'Not a JSON')
-    if 'name' not in request.get_json():
-        abort(400, 'Missing name')
-    states = []
-    new_state = State(name=request.json['name'])
+    """Creates a new State"""
+    # Check if the request body is valid JSON
+    if not request.is_json:
+        abort(400, description='Not a JSON')
+
+    # Get the JSON data from the request body
+    data = request.get_json()
+
+    # Check if the dictionary contains the key 'name'
+    if 'name' not in data:
+        abort(400, description='Missing name')
+
+    # Create a new State object
+    new_state = State(**data)
     storage.new(new_state)
     storage.save()
-    states.append(new_state.to_dict())
-    return jsonify(states[0]), 201
+
+    # Return the new State with status code 201
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
-def updates_state(state_id):
+def update_state(state_id):
     """Updates a State object"""
-    all_states = storage.all("State").values()
-    state_obj = [obj.to_dict() for obj in all_states if obj.id == state_id]
-    if state_obj == []:
+    state = storage.get(State, state_id)
+
+    # Check if state_id is linked to any State object
+    if state is None:
         abort(404)
-    if not request.get_json():
-        abort(400, 'Not a JSON')
-    state_obj[0]['name'] = request.json['name']
-    for obj in all_states:
-        if obj.id == state_id:
-            obj.name = request.json['name']
+
+    # Check if the request body is valid JSON
+    if not request.is_json:
+        abort(400, description='Not a JSON')
+
+    # Get the JSON data from the request body
+    data = request.get_json()
+
+    # Update the State object with valid key-value pairs
+    for key, value in data.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(state, key, value)
+
+    # Save the updated State object
     storage.save()
-    return jsonify(state_obj[0]), 200
+
+    # Return the updated State object with status code 200
+    return jsonify(state.to_dict()), 200
