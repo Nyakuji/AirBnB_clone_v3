@@ -70,15 +70,26 @@ def delete_city(city_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def updates_city(city_id):
     """Updates a City object"""
-    all_cities = storage.all("City").values()
-    city_obj = [obj.to_dict() for obj in all_cities if obj.id == city_id]
-    if city_obj == []:
+    city = storage.get(City, city_id)
+
+    # Check if city_id is linked to any City object
+    if city is None:
         abort(404)
-    if not request.get_json():
-        abort(400, 'Not a JSON')
-    city_obj[0]['name'] = request.json['name']
-    for obj in all_cities:
-        if obj.id == city_id:
-            obj.name = request.json['name']
+
+    # Check if the request body is valid JSON
+    if not request.is_json:
+        abort(400, description='Not a JSON')
+
+    # Get the JSON data from the request body
+    data = request.get_json()
+
+    # Update the City object with valid key-value pairs
+    for key, value in data.items():
+        if key not in ['id', 'state_id', 'created_at', 'updated_at']:
+            setattr(city, key, value)
+
+    # Save the updated City object
     storage.save()
-    return jsonify(city_obj[0]), 200
+
+    # Return the updated City object with status code 200
+    return jsonify(city.to_dict()), 200
