@@ -1,9 +1,9 @@
 # AirBnB Clone - The Console
-The console is the first segment of the AirBnB project at Holberton School that will collectively cover fundamental concepts of higher level programming. The goal of AirBnB project is to eventually deploy our server a simple copy of the AirBnB Website(HBnB). A command interpreter is created in this segment to manage objects for the AirBnB(HBnB) website.
+The console is the first segment of the AirBnB project at Holberton School that will collectively cover fundamental concepts of higher level programming. The goal of AirBnB project is to eventually deploy our server with a simple copy of the AirBnB Website(HBnB). A command interpreter is created in this segment to manage objects for the AirBnB(HBnB) website.
 
 #### Functionalities of this command interpreter:
-* Create a new object (ex: a new User or a new Place)
-* Retrieve an object from a file, a database etc...
+* Create a new object (ex: a new User or a New Place)
+* Retrieve an object from a file, a database, etc...
 * Do operations on objects (count, compute stats, etc...)
 * Update attributes of an object
 * Destroy an object
@@ -36,7 +36,7 @@ List of commands this console current supports:
 * `create` - Creates a new instance of`BaseModel`, saves it (to the JSON file) and prints the id
 * `destroy` - Deletes an instance based on the class name and id (save the change into the JSON file). 
 * `show` - Prints the string representation of an instance based on the class name and id.
-* `all` - Prints all string representation of all instances based or not on the class name. 
+* `all` - Prints all string representations of all instances based or not on the class name. 
 * `update` - Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file). 
 
 #### `models/` directory contains classes used for this project:
@@ -54,7 +54,7 @@ Classes inherited from Base Model:
 * [state.py](/models/state.py)
 * [user.py](/models/user.py)
 
-#### `/models/engine` directory contains File Storage class that handles JASON serialization and deserialization :
+#### `/models/engine` directory contains the File Storage class that handles JASON serialization and deserialization :
 [file_storage.py](/models/engine/file_storage.py) - serializes instances to a JSON file & deserializes back to instances
 * `def all(self)` - returns the dictionary __objects
 * `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
@@ -72,7 +72,7 @@ TestBaseModelDocs class:
 * `def test_bm_func_docstrings(self)` - Test for the presence of docstrings in BaseModel methods
 
 TestBaseModel class:
-* `def test_is_base_model(self)` - Test that the instatiation of a BaseModel works
+* `def test_is_base_model(self)` - Test that the instantiation of a BaseModel works
 * `def test_created_at_instantiation(self)` - Test created_at is a pub. instance attribute of type datetime
 * `def test_updated_at_instantiation(self)` - Test updated_at is a pub. instance attribute of type datetime
 * `def test_diff_datetime_objs(self)` - Test that two BaseModel instances have different datetime objects
@@ -129,7 +129,7 @@ TestBaseModel class:
 
 ## Examples of use
 ```
-vagrantAirBnB_clone$./console.py
+root@50d3e578688d:~/AirBnB_clone_v3# ./console.py
 (hbnb) help
 
 Documented commands (type help <topic>):
@@ -139,13 +139,13 @@ EOF  all  create  destroy  help  quit  show  update
 (hbnb) all MyModel
 ** class doesn't exist **
 (hbnb) create BaseModel
-7da56403-cc45-4f1c-ad32-bfafeb2bb050
+f442d860-8cd5-4eb9-8965-dceea9fc07d1
 (hbnb) all BaseModel
-[[BaseModel] (7da56403-cc45-4f1c-ad32-bfafeb2bb050) {'updated_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772167), 'id': '7da56403-cc45-4f1c-ad32-bfafeb2bb050', 'created_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772123)}]
-(hbnb) show BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
-[BaseModel] (7da56403-cc45-4f1c-ad32-bfafeb2bb050) {'updated_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772167), 'id': '7da56403-cc45-4f1c-ad32-bfafeb2bb050', 'created_at': datetime.datetime(2017, 9, 28, 9, 50, 46, 772123)}
-(hbnb) destroy BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
-(hbnb) show BaseModel 7da56403-cc45-4f1c-ad32-bfafeb2bb050
+[[BaseModel] (461bf72c-6a9e-429a-a068-7ad9396ef242) {'id': '461bf72c-6a9e-429a-a068-7ad9396ef242', 'created_at': datetime.datetime(2024, 2, 27, 5, 37, 28, 717719), 'updated_at': datetime.datetime(2024, 2, 27, 5, 37, 28, 717738)}, [BaseModel] (541ae567-37a0-41c4-868a-f8b40f42a739) {'id': '541ae567-37a0-41c4-868a-f8b40f42a739', 'created_at': datetime.datetime(2024, 2, 27, 5, 41, 34, 727742), 'updated_at': datetime.datetime(2024, 2, 27, 5, 41, 34, 727766)}, [BaseModel] (f442d860-8cd5-4eb9-8965-dceea9fc07d1) {'id': 'f442d860-8cd5-4eb9-8965-dceea9fc07d1', 'created_at': datetime.datetime(2024, 2, 27, 5, 50, 15, 764321), 'updated_at': datetime.datetime(2024, 2, 27, 5, 50, 15, 764347)}]
+(hbnb) show BaseModel 541ae567-37a0-41c4-868a-f8b40f42a739
+[BaseModel] (541ae567-37a0-41c4-868a-f8b40f42a739) {'id': '541ae567-37a0-41c4-868a-f8b40f42a739', 'created_at': datetime.datetime(2024, 2, 27, 5, 41, 34, 727742), 'updated_at': datetime.datetime(2024, 2, 27, 5, 41, 34, 727766)}
+(hbnb) destroy BaseModel 541ae567-37a0-41c4-868a-f8b40f42a739
+(hbnb) show BaseModel 541ae567-37a0-41c4-868a-f8b40f42a739
 ** no instance found **
 (hbnb) quit
 ```
@@ -156,7 +156,8 @@ No known bugs at this time.
 ## Authors
 Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
+Philip Opiyo - [Github](https://github.com/Nyakuji) / [Twitter](https://twitter.com/opiyophilipo)
 
-Second part of Airbnb: Joann Vuong
+The second part of Airbnb: Joann Vuong
 ## License
-Public Domain. No copy write protection. 
+Public Domain. No copywrite protection. 
